@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <regex>
+#include <unordered_set>
+bool isValidVariableName(const std::string &variable)
+{
+
+    static const std::regex variableRegex(R"([a-zA-Z_]\w*)");
+    return std::regex_match(variable, variableRegex);
+}
+int main() {
+    std::ifstream file("source.txt");
+    std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    file.close();
+    std::regex wordRegex(R"([a-zA-Z_]\w*)");
+    std::sregex_iterator regexIterator(content.begin(), content.end(), wordRegex);
+    std::sregex_iterator regexEnd;
+    std::unordered_set<std::string> validVariables;
+    std::unordered_set<std::string> invalidVariables;
+    while (regexIterator != regexEnd)
+        {
+        std::smatch match = *regexIterator;
+        std::string word = match.str();
+
+        if (!isValidVariableName(word))
+        {
+
+            invalidVariables.insert(word);
+        }
+        else
+        {
+            validVariables.insert(word);
+        }
+
+        ++regexIterator;
+    }
+    std::cout << "Valid variables in the source file:" << std::endl;
+    for (const auto &variable : validVariables) {
+        std::cout << variable << std::endl;
+    }
+    std::cout << "Invalid variables in the source file:" << std::endl;
+    for (const auto &variable : invalidVariables) {
+        std::cout << variable << std::endl;
+    }
+    return 0;
+}
+
