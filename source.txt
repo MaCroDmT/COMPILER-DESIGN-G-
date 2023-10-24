@@ -1,17 +1,27 @@
 #include <iostream>
 
-int main() {
-    int validVariable = 42;
-    double anotherValidVariable = 3.14159;
-    int invalid_Variable = 10;  // This is a valid variable
-    int $dollarSign_ = 20;  // This is a valid variable
-    float 44third_Variable = 7.5;  // This is a valid variable
-    int 4thVariabl?''<>e = 15;  // This is an invalid variable
-    char* ptr = nullptr; // This is a valid variable, though using pointers can be complex
+using namespace std;
 
-    // Some operators: +, -, *, /
-    // Keywords: if, else, return
+int main()
 
-    return 0;
+{
+
+    string name;
+
+
+
+    cout << "Enter ur name \n";
+
+    cin >> name;
+
+
+
+    for (int counter = 0; counter < 10; counter++)
+
+    {
+
+        cout << name << endl;
+
+    }
+
 }
-
