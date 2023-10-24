@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1698158020 source:d:\compiler design\identification of key-const-op-ident\identification of key-const-op-ident\main.cpp
+	<iostream>
+	<fstream>
+	<regex>
+	<vector>
+	<unordered_set>
+
