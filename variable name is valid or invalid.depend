@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1698158155 source:d:\compiler design\if the given variable is valid or not\variable name is valid or invalid\main.cpp
+	<iostream>
+	<fstream>
+	<regex>
+	<unordered_set>
+
