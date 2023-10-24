@@ -1,47 +1,75 @@
 #include <iostream>
 #include <fstream>
 #include <regex>
+#include <vector>
 #include <unordered_set>
-bool isValidVariableName(const std::string &variable)
-{
 
-    static const std::regex variableRegex(R"([a-zA-Z_]\w*)");
-    return std::regex_match(variable, variableRegex);
+bool isOperator(const std::string &word) {
+    static const std::unordered_set<std::string> operators =
+    {
+        "+", "-", "*", "/", "=", "<", ">", "<=", ">=", "==", "!="
+    };
+    return operators.find(word) != operators.end();
 }
-int main() {
+
+int main()
+{
+    std::unordered_set<std::string> keywords = {
+        "auto", "break", "case", "char", "class", "const", "continue", "default", "do", "double", "else", "enum",
+        "extern", "float", "for", "goto", "if", "int", "long", "namespace", "return", "short", "signed", "sizeof",
+        "static", "struct", "switch", "template", "this", "typedef", "union", "unsigned", "void", "volatile", "while"
+    };
+
     std::ifstream file("source.txt");
     std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
-    std::regex wordRegex(R"([a-zA-Z_]\w*)");
+    std::regex wordRegex(R"([a-zA-Z_]\w*|[+\-*/=<>]+|\d+\.\d+|\d+)");
     std::sregex_iterator regexIterator(content.begin(), content.end(), wordRegex);
     std::sregex_iterator regexEnd;
-    std::unordered_set<std::string> validVariables;
-    std::unordered_set<std::string> invalidVariables;
+    std::vector<std::string> identifiers;
+    std::vector<std::string> constants;
+    std::vector<std::string> operators;
+    std::vector<std::string> foundKeywords;
+
     while (regexIterator != regexEnd)
         {
         std::smatch match = *regexIterator;
         std::string word = match.str();
 
-        if (!isValidVariableName(word))
-        {
+        if (keywords.find(word) != keywords.end())
+            {
 
-            invalidVariables.insert(word);
-        }
-        else
-        {
-            validVariables.insert(word);
-        }
+            foundKeywords.push_back(word);
+        } else if (isOperator(word))
+         {
 
+            operators.push_back(word);
+        } else if (std::isdigit(word[0]))
+         {
+
+            constants.push_back(word);
+        } else
+        {
+            identifiers.push_back(word);
+        }
         ++regexIterator;
     }
-    std::cout << "Valid variables in the source file:" << std::endl;
-    for (const auto &variable : validVariables) {
-        std::cout << variable << std::endl;
+    std::cout << "Identifiers found in the source file:" << std::endl;
+    for (const auto &identifier : identifiers) {
+        std::cout << identifier << std::endl;
     }
-    std::cout << "Invalid variables in the source file:" << std::endl;
-    for (const auto &variable : invalidVariables) {
-        std::cout << variable << std::endl;
+    std::cout << "Constants found in the source file:" << std::endl;
+    for (const auto &constant : constants) {
+        std::cout << constant << std::endl;
     }
+    std::cout << "Operators found in the source file:" << std::endl;
+    for (const auto &op : operators) {
+        std::cout << op << std::endl;
+    }
+    std::cout << "Keywords found in the source file:" << std::endl;
+    for (const auto &keyword : foundKeywords) {
+        std::cout << keyword << std::endl;
+    }
+
     return 0;
 }
-
